@@ -1,67 +1,93 @@
-# Исходные данные для формирования словаря
-# Импортирование необходимых модулей
+"""Исходные данные для формирования словаря"""
+"""Импортирование необходимых модулей"""
 import json
 import re
-from random import randint, triangular
+from random import randint, triangular, choice
 from conf import MODEL
-
 print(MODEL)
 from faker import Faker
 
 
-# Функция для передачи заголовка книги
+
+def pk(start=1):
+    """Функция для инициализации начального значения счетчика"""
+    while True:
+        yield start
+        start += 1
+
+
 def task_title():
-    with open('books.txt', 'r', encoding='utf-8') as file:
-        for line in file:
-            print(line, end="")
+    """Функция для вывода автора книги в случайном порядке из файла books.txt"""
+    with open('books.txt', 'r', encoding='utf-8') as f:
+        text = f.readlines()
+        random_lines = choice(text)
+        return random_lines
 
 
-# Функция для генерации случайных имен для авторов книги
-def task_autor():
+
+
+def task_author():
+    """Функция для генерации случайных имен для авторов книги"""
     author_name = Faker()
-    print(author_name.name())
+    autor_lst = []
     for _ in range(2):
-        author = (author_name.name())
-        pass
+        autor_lst.append(author_name.name())
+        return autor_lst
 
-
-# Функция для генерации ISBN для книги
 def task_isbn():
-    isbn = Faker()
-    Faker.seed(0)
-    for _ in range(1):
-        pass
+    """Функция для генерации ISBN для книги"""
+    random_isbn = Faker()
+    for _ in range(1):                                                  #https://dvsemenov.ru/generaciya-sluchajnyh-dannyh-s-pomoshchyu-faker-v-python/
+        print(random_isbn.numerify(text='%%%-%-%%%%-%%%%-%%%-%%'))
+        isbn = random_isbn.numerify(text='%%%-%-%%%%-%%%%-%%%-%%')
+        return isbn
 
 
-# Функция для генерации года для книги
 def task_year():
+    """Функция для генерации года для книги"""
     year = randint(1954, 2021)
-    print(year)
-    pass
+    return year
 
-
-# Функция для генерации общего количества страниц книги
 def task_pages():
+    """Функция для генерации общего количества страниц книги"""
     pages = randint(200, 878)
-    pass
+    return pages
 
-
-# Функция для цены книги в рублях
 def task_price():
+    """Функция для цены книги в рублях"""
     price = randint(200, 1500)
-    pass
+    return round(price)
 
-# Функция для генарации рейтинга книги
-def task_price():
+def task_rating():
+    """Функция для генарации рейтинга книги"""
     rating = triangular(1, 10)
-    print(rating)
-    pass
+    return round(rating)
 
-# fields = {}
+
+
+def book_generator():
+
+    yield {
+            "model": MODEL,
+            "pk": next(pk()),
+            "fields": {
+                       "title": task_title(),
+                       "year": task_year(),
+                       "pages": task_pages(),
+                       "isbn13": task_isbn(),
+                       "rating": (task_rating()),
+                       "price": task_price(),
+                       "author": task_author()
+                       }
+            }
+
+
+
+print(list(book_generator()))
+
+
+
 # Словарь
 # if __name__ == "__main__":
 
-# def task_for_book():
 
-
-# with open("books.txt", "r") as f:
