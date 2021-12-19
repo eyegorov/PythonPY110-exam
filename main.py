@@ -9,15 +9,15 @@ from faker import Faker
 
 
 
-def pk(start=1):
-    """Функция для инициализации начального значения счетчика"""
-    while True:
-        yield start
-        start += 1
+#def pk(start=1):
+    #"""Функция для инициализации начального значения счетчика"""
+    #while True:
+       # yield start
+        #start += 1
 
 
 def task_title():
-    """Функция для вывода автора книги в случайном порядке из файла books.txt"""
+    #"""Функция для вывода автора книги в случайном порядке из файла books.txt"""
     with open('books.txt', 'r', encoding='utf-8') as f:
         text = f.readlines()
         random_lines = choice(text)
@@ -67,10 +67,11 @@ def task_rating():
 
 
 def book_generator():
-
-    yield {
+    pk = 1
+    while True:
+        yield {
             "model": MODEL,
-            "pk": next(pk()),
+            #"pk": next(pk()),
             "fields": {
                        "title": task_title(),
                        "year": task_year(),
@@ -81,17 +82,14 @@ def book_generator():
                        "author": task_author()
                        }
             }
-
 print(list(book_generator()))
 
 def main():
-    books = []
     current_book_list = book_generator()
-    for i in range(100):
-        books.append(list(current_book_list))
-    for book_list in books:
-        return book_list
-print(main())
+    books = [next(current_book_list) for _ in range(100)]
+    with open('Book_list.json', 'w', encoding="utf-8") as f:
+        json.dump(books, f, ensure_ascii=False, indent=4)
+
         
         
     
