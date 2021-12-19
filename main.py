@@ -27,18 +27,17 @@ def task_title():
 
 
 def task_author():
-    """Функция для генерации случайных имен для авторов книги"""
+    """Функция для генерации случайных имен авторов книги"""
     author_name = Faker()
-    autor_lst = []
+    author_lst = []
     for _ in range(2):
-        autor_lst.append(author_name.name())
-        return autor_lst
+        author_lst.append(author_name.name())
+        return author_lst
 
 def task_isbn():
     """Функция для генерации ISBN для книги"""
     random_isbn = Faker()
     for _ in range(1):                                                  #https://dvsemenov.ru/generaciya-sluchajnyh-dannyh-s-pomoshchyu-faker-v-python/
-        print(random_isbn.numerify(text='%%%-%-%%%%-%%%%-%%%-%%'))
         isbn = random_isbn.numerify(text='%%%-%-%%%%-%%%%-%%%-%%')
         return isbn
 
@@ -56,7 +55,9 @@ def task_pages():
 def task_price():
     """Функция для цены книги в рублях"""
     price = randint(200, 1500)
-    return round(price)
+    currency = "rub"
+    return round(price),currency
+    
 
 def task_rating():
     """Функция для генарации рейтинга книги"""
@@ -81,10 +82,28 @@ def book_generator():
                        }
             }
 
-
-
 print(list(book_generator()))
 
+def main():
+    books = []
+    current_book_list = book_generator()
+    for i in range(100):
+        books.append(list(current_book_list))
+    for book_list in books:
+        return book_list
+print(main())
+        
+        
+    
+
+
+
+
+
+
+
+
+    
 
 
 # Словарь
